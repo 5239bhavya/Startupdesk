@@ -13,9 +13,19 @@ import { toast } from "sonner";
 import { chatService, ChatSession, Message, AgentState } from "@/services/chatService";
 import { ChatSidebar } from "@/components/chat/ChatSidebar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useAuth } from "@/hooks/useAuth";
 
 const SmartBizAgent = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // Redirect to auth page if not logged in
+  useEffect(() => {
+    if (!user) {
+      toast.error("Please sign in to access the AI advisor");
+      navigate("/auth");
+    }
+  }, [user, navigate]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -256,13 +266,30 @@ const SmartBizAgent = () => {
     navigate("/plan");
   };
 
+  // Show loading while checking authentication
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
+          <p className="text-muted-foreground">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-50" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-float-delayed" />
+
       <Header />
       <main className="flex-1 container max-w-7xl py-4 md:py-8 flex gap-4 h-[calc(100vh-64px)]">
 
         {/* Desktop Sidebar */}
-        <div className="hidden md:block w-72 bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden h-full">
+        <div className="hidden md:block w-72 glass rounded-lg shadow-lg overflow-hidden h-full">
           <ChatSidebar
             sessions={chatSessions}
             currentSessionId={currentSessionId}
@@ -273,8 +300,8 @@ const SmartBizAgent = () => {
         </div>
 
         {/* Main Chat Area */}
-        <Card className="flex-1 flex flex-col shadow-lg border-primary/10 h-full overflow-hidden">
-          <CardHeader className="bg-primary text-primary-foreground rounded-t-lg flex flex-row items-center justify-between py-3">
+        <Card variant="glass" className="flex-1 flex flex-col shadow-2xl h-full overflow-hidden">
+          <CardHeader className="gradient-primary text-primary-foreground rounded-t-lg flex flex-row items-center justify-between py-3">
             <div className="flex items-center gap-3">
               {/* Mobile Sidebar Trigger */}
               <div className="md:hidden">
@@ -308,9 +335,9 @@ const SmartBizAgent = () => {
             </div>
 
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
-              className="bg-transparent border-primary-foreground/20 hover:bg-primary-foreground/10 text-primary-foreground"
+              className="bg-transparent border-primary-foreground/20 hover:bg-primary-foreground/10 text-primary-foreground hover:scale-110 transition-transform"
               onClick={handleNewChat}
               title="Start New Chat"
             >
@@ -324,13 +351,13 @@ const SmartBizAgent = () => {
                 {messages.map((msg, i) => (
                   <div
                     key={i}
-                    className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"
-                      }`}
+                    className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} animate-slide-up`}
+                    style={{ animationDelay: `${i * 0.05}s` }}
                   >
                     <div
                       className={`max-w-[85%] md:max-w-[75%] rounded-2xl px-4 py-2 ${msg.role === "user"
-                        ? "bg-primary text-primary-foreground rounded-tr-none"
-                        : "bg-muted text-foreground rounded-tl-none border border-slate-200"
+                        ? "gradient-primary text-primary-foreground rounded-tr-none shadow-lg"
+                        : "glass text-foreground rounded-tl-none hover:glass-strong transition-all"
                         }`}
                     >
                       <div className="flex items-center gap-2 mb-1">
@@ -348,8 +375,8 @@ const SmartBizAgent = () => {
                   </div>
                 ))}
                 {isLoading && (
-                  <div className="flex justify-start">
-                    <div className="bg-muted text-foreground rounded-2xl rounded-tl-none px-4 py-3 border border-slate-200">
+                  <div className="flex justify-start animate-scale-bounce">
+                    <div className="glass text-foreground rounded-2xl rounded-tl-none px-4 py-3">
                       <Loader2 className="w-5 h-5 animate-spin text-primary" />
                     </div>
                   </div>
@@ -381,7 +408,7 @@ const SmartBizAgent = () => {
             )}
           </CardContent>
 
-          <CardFooter className="p-3 md:p-4 bg-slate-50 border-t">
+          <CardFooter className="p-3 md:p-4 glass-subtle border-t border-border">
             <form onSubmit={handleSubmit} className="flex w-full gap-2">
               <Input
                 ref={inputRef}
@@ -389,10 +416,10 @@ const SmartBizAgent = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 disabled={isLoading}
-                className="flex-1"
+                className="flex-1 glass-subtle"
                 autoFocus
               />
-              <Button type="submit" disabled={isLoading || !input.trim()}>
+              <Button type="submit" disabled={isLoading || !input.trim()} variant="hero">
                 {isLoading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (

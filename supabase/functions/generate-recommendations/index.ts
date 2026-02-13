@@ -13,10 +13,16 @@ serve(async (req) => {
   try {
     const { userProfile } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
+    const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
+    const API_KEY = LOVABLE_API_KEY || OPENROUTER_API_KEY;
+
+    if (!API_KEY) {
+      throw new Error("API Key configuration missing. Set LOVABLE_API_KEY or OPENROUTER_API_KEY.");
     }
+
+    const API_URL = LOVABLE_API_KEY
+      ? "https://ai.gateway.lovable.dev/v1/chat/completions"
+      : "https://openrouter.ai/api/v1/chat/completions";
 
     console.log("Generating recommendations for:", userProfile);
 
@@ -64,10 +70,10 @@ IMPORTANT:
 - Adjust complexity based on experience level (${userProfile.experience})
 - Return ONLY valid JSON, no additional text`;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const response = await fetch(API_URL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        Authorization: `Bearer ${API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -82,7 +88,7 @@ IMPORTANT:
     if (!response.ok) {
       const errorText = await response.text();
       console.error("AI gateway error:", response.status, errorText);
-      
+
       if (response.status === 429) {
         return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again later." }), {
           status: 429,
@@ -95,23 +101,23 @@ IMPORTANT:
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      
+
       throw new Error(`AI gateway error: ${response.status}`);
     }
 
     const data = await response.json();
     const content = data.choices?.[0]?.message?.content;
-    
+
     console.log("AI response:", content);
-    
+
     // Parse the JSON from the response
     const jsonMatch = content.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       throw new Error("Failed to parse AI response as JSON");
     }
-    
+
     const ideas = JSON.parse(jsonMatch[0]);
-    
+
     return new Response(JSON.stringify(ideas), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

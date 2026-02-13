@@ -255,44 +255,53 @@ const MarketplacePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-50" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl animate-float-delayed" />
+
       <Header />
-      <main className="flex-1 py-8 px-4 bg-muted/20">
+      <main className="flex-1 py-8 px-4 relative">
         <div className="container max-w-6xl">
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 animate-slide-up">
             <div>
-              <h1 className="text-3xl font-bold mb-2">
+              <h1 className="text-4xl font-bold mb-2 gradient-text">
                 {activeTab === 'sell' ? 'Marketplace: Finished Goods' :
                   activeTab === 'buy' ? 'Raw Materials & Supplies' :
-                    activeTab === 'export' ? 'Export Partners' : 'Marketplace'}
+                    activeTab === 'export' ? 'Export Partners' : 'B2B Marketplace'}
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground text-lg">
                 {activeTab === 'sell' ? 'Buy finished goods directly from verified manufacturers.' :
                   activeTab === 'buy' ? 'Source raw materials and industrial supplies for your business.' :
                     activeTab === 'export' ? 'Connect with authorized export and logistics partners.' :
                       'Buy, sell, or export products. Connect with buyers and suppliers.'}
               </p>
             </div>
-            <Button onClick={() => setIsDialogOpen(true)} className="bg-primary hover:bg-primary/90">
+            <Button
+              onClick={() => setIsDialogOpen(true)}
+              variant="hero"
+              className="hover:scale-105 transition-transform"
+            >
               <Plus className="h-4 w-4 mr-2" />
-              Post Requirment
+              Post Requirement
             </Button>
           </div>
 
           {/* Filters */}
-          <div className="flex flex-col md:flex-row gap-4 mb-6">
+          <div className="flex flex-col md:flex-row gap-4 mb-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search listings..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+                className="pl-10 glass-subtle"
               />
             </div>
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-              <SelectTrigger className="w-full md:w-48">
+              <SelectTrigger className="w-full md:w-48 glass-subtle">
                 <Filter className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
@@ -310,11 +319,11 @@ const MarketplacePage = () => {
             value={activeTab}
             onValueChange={(val) => {
               setActiveTab(val);
-              setCategoryFilter("all"); // Reset filter on tab change to avoid empty states
+              setCategoryFilter("all");
             }}
             className="space-y-6"
           >
-            <TabsList>
+            <TabsList className="glass">
               <TabsTrigger value="all">All Listings</TabsTrigger>
               <TabsTrigger value="sell" className="gap-2">
                 <ShoppingBag className="h-4 w-4" />
@@ -332,10 +341,10 @@ const MarketplacePage = () => {
 
             <TabsContent value={activeTab}>
               {isLoading ? (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {[1, 2, 3, 4, 5, 6].map((i) => (
-                    <Card key={i} className="animate-pulse">
-                      <CardContent className="p-4">
+                    <Card key={i} variant="glass" className="animate-pulse">
+                      <CardContent className="p-6">
                         <div className="h-6 bg-muted rounded w-3/4 mb-3" />
                         <div className="h-4 bg-muted rounded w-full mb-2" />
                         <div className="h-4 bg-muted rounded w-2/3" />
@@ -344,32 +353,37 @@ const MarketplacePage = () => {
                   ))}
                 </div>
               ) : filteredListings.length === 0 ? (
-                <Card className="border-dashed">
+                <Card variant="glass" className="border-dashed animate-scale-bounce">
                   <CardContent className="p-12 text-center">
                     <Package className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                     <h3 className="font-semibold mb-2">No listings found</h3>
                     <p className="text-sm text-muted-foreground mb-4">
                       Be the first to create a listing in this category!
                     </p>
-                    <Button onClick={() => setIsDialogOpen(true)}>
+                    <Button onClick={() => setIsDialogOpen(true)} variant="hero">
                       <Plus className="h-4 w-4 mr-2" />
                       Create Listing
                     </Button>
                   </CardContent>
                 </Card>
               ) : (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {filteredListings.map((listing) => (
-                    <Card key={listing.id} className="group hover:shadow-lg transition-all duration-200 border-muted/60 bg-white">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredListings.map((listing, index) => (
+                    <Card
+                      key={listing.id}
+                      variant="glow"
+                      className="overflow-hidden animate-slide-up"
+                      style={{ animationDelay: `${index * 0.05}s` }}
+                    >
                       <CardContent className="p-0">
                         {/* Card Header Section */}
-                        <div className="p-5 border-b bg-muted/5">
-                          <div className="flex items-start justify-between mb-2">
-                            <Badge variant="secondary" className="bg-white border-muted-foreground/20 text-muted-foreground hover:bg-white text-xs font-normal">
+                        <div className="p-5 border-b glass-subtle">
+                          <div className="flex items-start justify-between mb-3">
+                            <Badge variant="secondary" className="glass text-xs font-medium">
                               {listing.category}
                             </Badge>
                             {listing.is_gov_verified && (
-                              <div className="flex items-center gap-1.5 px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] uppercase tracking-wider font-semibold rounded-full border border-blue-100">
+                              <div className="flex items-center gap-1.5 px-2.5 py-1 glass text-blue-400 text-[10px] uppercase tracking-wider font-bold rounded-full border border-blue-400/30 shadow-glow">
                                 <ShieldCheck className="w-3 h-3" />
                                 Verified
                               </div>
@@ -378,7 +392,7 @@ const MarketplacePage = () => {
                           <h3 className="font-bold text-lg leading-tight text-foreground group-hover:text-primary transition-colors">
                             {listing.title.replace(/^(Supplier: |Manufacturer: |Export Partner: )/, '')}
                           </h3>
-                          <div className="flex items-center gap-1 mt-1 text-xs text-muted-foreground/80 font-medium uppercase tracking-wide">
+                          <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground font-medium uppercase tracking-wide">
                             {listing.title.startsWith("Supplier:") && "🏭 Industrial Supplier"}
                             {listing.title.startsWith("Manufacturer:") && "🛠️ Manufacturer"}
                             {listing.title.startsWith("Export Partner:") && "🚢 Export Partner"}
@@ -393,12 +407,12 @@ const MarketplacePage = () => {
 
                           <div className="grid grid-cols-2 gap-y-2 text-sm">
                             <div className="flex items-center gap-2 text-muted-foreground">
-                              <MapPin className="h-4 w-4 text-primary/70" />
+                              <MapPin className="h-4 w-4 text-primary" />
                               <span className="truncate">{listing.location}</span>
                             </div>
                             {listing.price_range && (
                               <div className="flex items-center gap-2 text-muted-foreground">
-                                <IndianRupee className="h-4 w-4 text-primary/70" />
+                                <IndianRupee className="h-4 w-4 text-primary" />
                                 <span>{listing.price_range}</span>
                               </div>
                             )}
@@ -407,8 +421,22 @@ const MarketplacePage = () => {
                           {/* Actions */}
                           <div className="pt-2">
                             {listing.contact_info && (
-                              <Button className="w-full bg-primary hover:bg-primary/90 text-white shadow-sm font-medium h-10 transition-all duration-200">
+                              <Button
+                                variant="hero"
+                                className="w-full font-medium h-10 hover:scale-105 transition-transform"
+                              >
                                 {listing.is_gov_verified ? "Inquiry Official Record" : "Contact Supplier"}
+                              </Button>
+                            )}
+                            {user?.id === listing.user_id && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="w-full mt-2 text-destructive hover:bg-destructive/10"
+                                onClick={() => handleDeleteListing(listing.id)}
+                              >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Delete
                               </Button>
                             )}
                           </div>

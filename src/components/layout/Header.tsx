@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Lightbulb, User, LogOut, FolderOpen, ShoppingBag, Bot, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +17,7 @@ export function Header() {
   const isHome = location.pathname === "/";
   const { user, signOut } = useAuth();
   const [hasBusiness, setHasBusiness] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const checkBusiness = () => {
@@ -24,21 +26,30 @@ export function Header() {
     };
 
     checkBusiness();
-    // Listen for storage events in case it changes in another tab/window, 
-    // though purely client-side nav won't trigger this for same-page. 
-    // We mainly rely on mount.
     window.addEventListener('storage', checkBusiness);
     return () => window.removeEventListener('storage', checkBusiness);
-  }, [location]); // Re-check on location change
+  }, [location]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
+    <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled
+      ? 'bg-background/95 backdrop-blur-md border-b border-border shadow-lg'
+      : 'bg-transparent border-b border-transparent'
+      }`}>
+
+      <div className={`container flex h-16 items-center justify-between relative ${!scrolled ? 'text-shadow-glow' : ''}`}>
         <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-transform group-hover:scale-105">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-primary text-primary-foreground transition-transform group-hover:scale-110 group-hover:rotate-6 shadow-glow">
             <Lightbulb className="h-5 w-5" />
           </div>
-          <span className="text-xl font-semibold tracking-tight">
+          <span className="ml-2 text-xl font-semibold tracking-tight gradient-text">
             SmartBiz AI
           </span>
         </Link>
@@ -54,7 +65,7 @@ export function Header() {
 
           {hasBusiness && (
             <Link to="/plan">
-              <Button variant="ghost" size="sm" className="text-primary font-medium">
+              <Button variant="ghost" size="sm" className="text-primary font-medium hover:bg-primary/10">
                 <LayoutDashboard className="h-4 w-4 mr-2" />
                 Dashboard
               </Button>
@@ -62,7 +73,7 @@ export function Header() {
           )}
 
           <Link to="/marketplace">
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" className="hover:bg-accent/50">
               <ShoppingBag className="h-4 w-4 mr-2" />
               <span className="hidden sm:inline">Marketplace</span>
             </Button>
@@ -115,8 +126,9 @@ export function Header() {
             </Link>
           )}
 
+          <ThemeToggle />
           <Link to="/start">
-            <Button variant={isHome ? "hero" : "default"} size="sm">
+            <Button variant={isHome ? "hero" : "default"} size="sm" className="shadow-glow hover:shadow-glow-lg">
               Get Started
             </Button>
           </Link>

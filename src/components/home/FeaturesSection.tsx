@@ -1,11 +1,11 @@
-import { 
-  Lightbulb, 
-  Package, 
-  Users, 
-  MapPin, 
-  Calculator, 
-  Megaphone, 
-  TrendingUp 
+import {
+  Lightbulb,
+  Package,
+  Users,
+  MapPin,
+  Calculator,
+  Megaphone,
+  TrendingUp
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -49,9 +49,12 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section className="py-20 lg:py-28">
-      <div className="container">
-        <div className="mx-auto max-w-2xl text-center mb-16">
+    <section className="py-20 lg:py-28 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent opacity-40" />
+
+      <div className="container relative">
+        <div className="mx-auto max-w-2xl text-center mb-16 animate-slide-up">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
             Everything You Need to Start
           </h2>
@@ -62,17 +65,19 @@ export function FeaturesSection() {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
-            <Card 
-              key={feature.title} 
-              variant="interactive"
+            <Card
+              key={feature.title}
+              variant="glow"
               className="animate-slide-up"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <CardContent className="p-6">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-primary text-primary-foreground group-hover:scale-110 transition-transform duration-300">
                   <feature.icon className="h-6 w-6" />
                 </div>
-                <h3 className="mb-2 font-semibold text-lg">{feature.title}</h3>
+                <h3 className="mb-2 font-semibold text-lg group-hover:text-primary transition-colors">
+                  {feature.title}
+                </h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
                   {feature.description}
                 </p>

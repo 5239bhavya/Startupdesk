@@ -3,22 +3,27 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'elevated' | 'interactive' | 'selected';
+  variant?: 'default' | 'elevated' | 'interactive' | 'selected' | 'glass' | 'glow';
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = 'default', ...props }, ref) => {
     const variants = {
-      default: "rounded-xl border bg-card text-card-foreground shadow-sm",
-      elevated: "rounded-xl border bg-card text-card-foreground shadow-lg",
-      interactive: "rounded-xl border bg-card text-card-foreground shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer",
-      selected: "rounded-xl border-2 border-primary bg-card text-card-foreground shadow-lg",
+      default: "rounded-xl border bg-card text-card-foreground shadow-sm transition-all duration-300",
+      elevated: "rounded-xl border bg-card text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300",
+      interactive: "rounded-xl border bg-card text-card-foreground shadow-sm hover-lift cursor-pointer group",
+      selected: "rounded-xl border-2 border-primary bg-card text-card-foreground shadow-lg glow-sm",
+      glass: "rounded-xl glass text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300",
+      glow: "rounded-xl border border-primary/20 bg-card text-card-foreground shadow-sm hover-lift hover-glow cursor-pointer group",
     };
 
     return (
       <div
         ref={ref}
-        className={cn(variants[variant], className)}
+        className={cn(
+          variants[variant],
+          className
+        )}
         {...props}
       />
     );

@@ -31,15 +31,24 @@ const RecommendationsPage = () => {
   const generateRecommendations = async (profile: UserProfile) => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
-      const { data, error: fnError } = await supabase.functions.invoke('generate-recommendations', {
-        body: { userProfile: profile }
+      // TEMPORARY: Using backend endpoint instead of Supabase Edge Function
+      // TODO: Switch back to Edge Function once deployed
+      const response = await fetch('http://localhost:5000/api/recommendations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userProfile: profile })
       });
 
-      if (fnError) {
-        throw new Error(fnError.message);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate recommendations');
       }
+
+      const data = await response.json();
 
       if (data.error) {
         throw new Error(data.error);
@@ -90,7 +99,7 @@ const RecommendationsPage = () => {
               Your Recommended Business Ideas
             </h1>
             <p className="text-muted-foreground max-w-lg mx-auto">
-              Based on your budget of ₹{parseInt(userProfile.budget).toLocaleString("en-IN")} 
+              Based on your budget of ₹{parseInt(userProfile.budget).toLocaleString("en-IN")}
               in {userProfile.city}, here are the top opportunities in {userProfile.interest}.
             </p>
           </div>

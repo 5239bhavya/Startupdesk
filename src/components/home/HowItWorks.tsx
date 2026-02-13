@@ -29,9 +29,12 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="py-20 lg:py-28 bg-muted/30">
-      <div className="container">
-        <div className="mx-auto max-w-2xl text-center mb-16">
+    <section className="py-20 lg:py-28 relative overflow-hidden">
+      {/* Background pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-muted/30 via-transparent to-muted/30" />
+
+      <div className="container relative">
+        <div className="mx-auto max-w-2xl text-center mb-16 animate-slide-up">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
             How It Works
           </h2>
@@ -42,24 +45,26 @@ export function HowItWorks() {
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (
-            <div 
-              key={step.step} 
-              className="relative animate-slide-up"
+            <div
+              key={step.step}
+              className="relative group animate-slide-up"
               style={{ animationDelay: `${index * 0.15}s` }}
             >
               {/* Connector line */}
               {index < steps.length - 1 && (
-                <div className="absolute top-10 left-1/2 hidden h-0.5 w-full bg-border lg:block" />
+                <div className="absolute top-10 left-1/2 hidden h-0.5 w-full bg-gradient-to-r from-primary/50 to-accent/50 lg:block" />
               )}
-              
+
               <div className="relative flex flex-col items-center text-center">
-                <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-background shadow-lg border relative z-10">
-                  <step.icon className="h-8 w-8 text-primary" />
-                  <span className="absolute -top-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-2xl glass shadow-lg border relative z-10 group-hover:scale-110 transition-transform duration-300">
+                  <step.icon className="h-8 w-8 text-primary group-hover:rotate-12 transition-transform" />
+                  <span className="absolute -top-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full gradient-primary text-xs font-bold text-primary-foreground animate-pulse-glow">
                     {step.step}
                   </span>
                 </div>
-                <h3 className="mb-2 font-semibold text-lg">{step.title}</h3>
+                <h3 className="mb-2 font-semibold text-lg group-hover:text-primary transition-colors">
+                  {step.title}
+                </h3>
                 <p className="text-muted-foreground text-sm max-w-[200px]">
                   {step.description}
                 </p>

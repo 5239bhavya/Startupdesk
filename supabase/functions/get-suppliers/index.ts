@@ -12,11 +12,18 @@ serve(async (req) => {
 
   try {
     const { materialName, businessType, city } = await req.json();
-    
+
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY is not configured');
+    const OPENROUTER_API_KEY = Deno.env.get('OPENROUTER_API_KEY');
+    const API_KEY = LOVABLE_API_KEY || OPENROUTER_API_KEY;
+
+    if (!API_KEY) {
+      throw new Error('API Key configuration missing. Set LOVABLE_API_KEY or OPENROUTER_API_KEY.');
     }
+
+    const API_URL = LOVABLE_API_KEY
+      ? 'https://ai.gateway.lovable.dev/v1/chat/completions'
+      : 'https://openrouter.ai/api/v1/chat/completions';
 
     console.log(`Fetching suppliers for: ${materialName} in ${city} for ${businessType}`);
 
@@ -38,14 +45,14 @@ Each supplier should have:
 
 Return ONLY valid JSON array, no other text.`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Authorization': `Bearer ${API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'meta-llama/llama-3.1-8b-instruct',
         messages: [
           { role: 'system', content: 'You are a business data API that returns realistic Indian supplier data in JSON format only.' },
           { role: 'user', content: prompt }
@@ -71,7 +78,7 @@ Return ONLY valid JSON array, no other text.`;
 
     const data = await response.json();
     const content = data.choices?.[0]?.message?.content || '[]';
-    
+
     // Extract JSON from response
     let suppliers;
     try {
