@@ -3,9 +3,27 @@ import { Card } from "@/components/ui/card";
 import { Star } from "lucide-react";
 
 const items = [
-  { name: "Priya S.", role: "Founder, LocalBakery", text: "SmartBiz helped me build a clear plan and find my first customers.", avatar: "https://i.pravatar.cc/64?img=5", rating: 5 },
-  { name: "Arjun K.", role: "Co-founder, FarmFresh", text: "The AI advisor suggested a pricing model that doubled our margins.", avatar: "https://i.pravatar.cc/64?img=12", rating: 5 },
-  { name: "Neha P.", role: "Solo Founder", text: "Fast, practical and actionable — perfect for first-time founders.", avatar: "https://i.pravatar.cc/64?img=20", rating: 5 },
+  {
+    name: "Priya S.",
+    role: "Founder, LocalBakery",
+    text: "SmartBiz helped me build a clear plan and find my first customers.",
+    avatar: "https://i.pravatar.cc/64?img=5",
+    rating: 5,
+  },
+  {
+    name: "Arjun K.",
+    role: "Co-founder, FarmFresh",
+    text: "The AI advisor suggested a pricing model that doubled our margins.",
+    avatar: "https://i.pravatar.cc/64?img=12",
+    rating: 5,
+  },
+  {
+    name: "Neha P.",
+    role: "Solo Founder",
+    text: "Fast, practical and actionable — perfect for first-time founders.",
+    avatar: "https://i.pravatar.cc/64?img=20",
+    rating: 5,
+  },
 ];
 
 export function Testimonials() {
@@ -14,7 +32,9 @@ export function Testimonials() {
       <div className="container">
         <div className="mx-auto max-w-4xl text-center mb-12 animate-slide-up">
           <h3 className="text-3xl font-bold mb-4">What founders say</h3>
-          <p className="text-muted-foreground text-lg">Real feedback from entrepreneurs who launched with SmartBiz AI</p>
+          <p className="text-muted-foreground text-lg">
+            Real feedback from entrepreneurs who launched with SmartBiz AI
+          </p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">

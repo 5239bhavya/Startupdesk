@@ -89,8 +89,8 @@ const StarRating = ({ rating }: { rating: number }) => {
             star <= rating
               ? "fill-warning text-warning"
               : star - 0.5 <= rating
-              ? "fill-warning/50 text-warning"
-              : "text-muted-foreground/30"
+                ? "fill-warning/50 text-warning"
+                : "text-muted-foreground/30"
           }`}
         />
       ))}
@@ -101,7 +101,7 @@ const StarRating = ({ rating }: { rating: number }) => {
 
 export const SupplierComparison = ({ materials }: SupplierComparisonProps) => {
   const [selectedMaterial, setSelectedMaterial] = useState<string>(
-    materials[0]?.name || ""
+    materials[0]?.name || "",
   );
   const [compareList, setCompareList] = useState<string[]>([]);
   const [expandedSupplier, setExpandedSupplier] = useState<string | null>(null);
@@ -113,13 +113,13 @@ export const SupplierComparison = ({ materials }: SupplierComparisonProps) => {
       prev.includes(supplierName)
         ? prev.filter((s) => s !== supplierName)
         : prev.length < 3
-        ? [...prev, supplierName]
-        : prev
+          ? [...prev, supplierName]
+          : prev,
     );
   };
 
   const comparedSuppliers = suppliers.filter((s) =>
-    compareList.includes(s.name)
+    compareList.includes(s.name),
   );
 
   return (
@@ -144,9 +144,7 @@ export const SupplierComparison = ({ materials }: SupplierComparisonProps) => {
           <Card
             key={supplier.name}
             className={`transition-all ${
-              compareList.includes(supplier.name)
-                ? "ring-2 ring-primary"
-                : ""
+              compareList.includes(supplier.name) ? "ring-2 ring-primary" : ""
             }`}
           >
             <CardContent className="p-4">
@@ -190,7 +188,7 @@ export const SupplierComparison = ({ materials }: SupplierComparisonProps) => {
                 className="mt-3 w-full"
                 onClick={() =>
                   setExpandedSupplier(
-                    expandedSupplier === supplier.name ? null : supplier.name
+                    expandedSupplier === supplier.name ? null : supplier.name,
                   )
                 }
               >
@@ -276,7 +274,10 @@ export const SupplierComparison = ({ materials }: SupplierComparisonProps) => {
                   <TableRow>
                     <TableCell className="font-medium">Price Range</TableCell>
                     {comparedSuppliers.map((s) => (
-                      <TableCell key={s.name} className="font-semibold text-primary">
+                      <TableCell
+                        key={s.name}
+                        className="font-semibold text-primary"
+                      >
                         {s.priceRange}
                       </TableCell>
                     ))}

@@ -2,7 +2,7 @@ export interface UserProfile {
   budget: string;
   city: string;
   interest: string;
-  experience: 'beginner' | 'experienced';
+  experience: "beginner" | "experienced";
 }
 
 export interface BusinessIdea {
@@ -12,9 +12,17 @@ export interface BusinessIdea {
   investmentRange: string;
   expectedRevenue: string;
   profitMargin: string;
-  riskLevel: 'Low' | 'Medium' | 'High';
+  riskLevel: "Low" | "Medium" | "High";
   breakEvenTime: string;
   icon: string;
+}
+
+export interface Product {
+  id: string;
+  business_id: string;
+  name: string;
+  description: string;
+  avg_selling_price: number;
 }
 
 export interface Supplier {
@@ -35,6 +43,12 @@ export interface RawMaterial {
   estimatedCost: string;
   tips: string;
   suppliers?: Supplier[];
+}
+
+export interface ProductionStep {
+  step: string;
+  description: string;
+  costVsTime: string;
 }
 
 export interface WorkforceRequirement {
@@ -77,16 +91,21 @@ export interface ProgressTask {
   id: string;
   title: string;
   description: string;
-  category: 'setup' | 'materials' | 'marketing' | 'operations' | 'growth';
+  category: "setup" | "materials" | "marketing" | "operations" | "growth";
   completed: boolean;
   dueDate?: string;
 }
 
-export type DashboardTemplate = 'checklist' | 'milestones' | 'timeline' | 'metrics';
+export type DashboardTemplate =
+  | "checklist"
+  | "milestones"
+  | "timeline"
+  | "metrics";
 
 export interface BusinessPlan {
   idea: BusinessIdea;
   rawMaterials: RawMaterial[];
+  productionPlan?: ProductionStep[];
   workforce: WorkforceRequirement[];
   location: LocationAdvice;
   pricing: PricingStrategy;

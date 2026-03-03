@@ -12,7 +12,9 @@ export function Footer() {
               </div>
               <div>
                 <div className="font-semibold gradient-text">SmartBiz AI</div>
-                <p className="text-sm text-muted-foreground">AI business planning & growth for startups</p>
+                <p className="text-sm text-muted-foreground">
+                  AI business planning & growth for startups
+                </p>
               </div>
             </div>
           </div>
@@ -48,7 +50,9 @@ export function Footer() {
                 <Instagram className="h-4 w-4" />
               </button>
             </div>
-            <p className="mt-4 text-sm text-muted-foreground">© 2026 SmartBiz AI. All rights reserved.</p>
+            <p className="mt-4 text-sm text-muted-foreground">
+              © 2026 SmartBiz AI. All rights reserved.
+            </p>
           </div>
         </div>
       </div>

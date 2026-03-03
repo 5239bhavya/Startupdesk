@@ -21,7 +21,11 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main ref={containerRef} data-stagger-ready={"false"} className="flex-1 stagger">
+      <main
+        ref={containerRef}
+        data-stagger-ready={"false"}
+        className="flex-1 stagger"
+      >
         <HeroSection />
         <FeaturesSection />
         <StatsSection />

@@ -21,11 +21,17 @@ export function CTASection() {
             <h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl mb-4 animate-slide-up">
               Ready to Start Your Business?
             </h2>
-            <p className="text-lg text-primary-foreground/90 mb-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              Get your personalized AI-powered business plan in minutes.
-              No guesswork, just practical guidance.
+            <p
+              className="text-lg text-primary-foreground/90 mb-8 animate-slide-up"
+              style={{ animationDelay: "0.1s" }}
+            >
+              Get your personalized AI-powered business plan in minutes. No
+              guesswork, just practical guidance.
             </p>
-            <div className="animate-scale-bounce" style={{ animationDelay: '0.2s' }}>
+            <div
+              className="animate-scale-bounce"
+              style={{ animationDelay: "0.2s" }}
+            >
               <Link to="/start">
                 <Button
                   size="xl"

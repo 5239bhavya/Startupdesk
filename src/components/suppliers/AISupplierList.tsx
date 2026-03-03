@@ -63,8 +63,8 @@ const StarRating = ({ rating }: { rating: number }) => {
             star <= rating
               ? "fill-warning text-warning"
               : star - 0.5 <= rating
-              ? "fill-warning/50 text-warning"
-              : "text-muted-foreground/30"
+                ? "fill-warning/50 text-warning"
+                : "text-muted-foreground/30"
           }`}
         />
       ))}
@@ -73,8 +73,14 @@ const StarRating = ({ rating }: { rating: number }) => {
   );
 };
 
-export const AISupplierList = ({ materials, businessType, city }: AISupplierListProps) => {
-  const [selectedMaterial, setSelectedMaterial] = useState<string>(materials[0]?.name || "");
+export const AISupplierList = ({
+  materials,
+  businessType,
+  city,
+}: AISupplierListProps) => {
+  const [selectedMaterial, setSelectedMaterial] = useState<string>(
+    materials[0]?.name || "",
+  );
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [compareList, setCompareList] = useState<string[]>([]);
@@ -83,11 +89,11 @@ export const AISupplierList = ({ materials, businessType, city }: AISupplierList
 
   const fetchSuppliers = async () => {
     if (!selectedMaterial) return;
-    
+
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('get-suppliers', {
-        body: { materialName: selectedMaterial, businessType, city }
+      const { data, error } = await supabase.functions.invoke("get-suppliers", {
+        body: { materialName: selectedMaterial, businessType, city },
       });
 
       if (error) throw error;
@@ -96,8 +102,10 @@ export const AISupplierList = ({ materials, businessType, city }: AISupplierList
       setSuppliers(data.suppliers || []);
       setHasLoaded(true);
     } catch (err) {
-      console.error('Error fetching suppliers:', err);
-      toast.error(err instanceof Error ? err.message : 'Failed to fetch suppliers');
+      console.error("Error fetching suppliers:", err);
+      toast.error(
+        err instanceof Error ? err.message : "Failed to fetch suppliers",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -108,12 +116,14 @@ export const AISupplierList = ({ materials, businessType, city }: AISupplierList
       prev.includes(supplierName)
         ? prev.filter((s) => s !== supplierName)
         : prev.length < 3
-        ? [...prev, supplierName]
-        : prev
+          ? [...prev, supplierName]
+          : prev,
     );
   };
 
-  const comparedSuppliers = suppliers.filter((s) => compareList.includes(s.name));
+  const comparedSuppliers = suppliers.filter((s) =>
+    compareList.includes(s.name),
+  );
 
   return (
     <div className="space-y-6">
@@ -143,7 +153,8 @@ export const AISupplierList = ({ materials, businessType, city }: AISupplierList
             <Sparkles className="h-12 w-12 mx-auto mb-4 text-primary opacity-50" />
             <h3 className="font-semibold mb-2">AI-Powered Supplier Search</h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Get real-time supplier recommendations for "{selectedMaterial}" in {city}
+              Get real-time supplier recommendations for "{selectedMaterial}" in{" "}
+              {city}
             </p>
             <Button onClick={fetchSuppliers} disabled={isLoading}>
               {isLoading ? (
@@ -199,7 +210,9 @@ export const AISupplierList = ({ materials, businessType, city }: AISupplierList
               <Card
                 key={supplier.name}
                 className={`transition-all ${
-                  compareList.includes(supplier.name) ? "ring-2 ring-primary" : ""
+                  compareList.includes(supplier.name)
+                    ? "ring-2 ring-primary"
+                    : ""
                 }`}
               >
                 <CardContent className="p-4">
@@ -241,7 +254,8 @@ export const AISupplierList = ({ materials, businessType, city }: AISupplierList
                       </div>
                       {supplier.specialization && (
                         <p className="text-sm text-muted-foreground mt-2">
-                          <strong>Specializes in:</strong> {supplier.specialization}
+                          <strong>Specializes in:</strong>{" "}
+                          {supplier.specialization}
                         </p>
                       )}
                     </div>
@@ -259,7 +273,9 @@ export const AISupplierList = ({ materials, businessType, city }: AISupplierList
                     className="mt-3 w-full"
                     onClick={() =>
                       setExpandedSupplier(
-                        expandedSupplier === supplier.name ? null : supplier.name
+                        expandedSupplier === supplier.name
+                          ? null
+                          : supplier.name,
                       )
                     }
                   >
@@ -343,9 +359,14 @@ export const AISupplierList = ({ materials, businessType, city }: AISupplierList
                         ))}
                       </TableRow>
                       <TableRow>
-                        <TableCell className="font-medium">Price Range</TableCell>
+                        <TableCell className="font-medium">
+                          Price Range
+                        </TableCell>
                         {comparedSuppliers.map((s) => (
-                          <TableCell key={s.name} className="font-semibold text-primary">
+                          <TableCell
+                            key={s.name}
+                            className="font-semibold text-primary"
+                          >
                             {s.priceRange}
                           </TableCell>
                         ))}

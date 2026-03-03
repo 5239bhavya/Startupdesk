@@ -194,7 +194,9 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
 
   useEffect(() => {
     // Load template from localStorage
-    const savedTemplate = localStorage.getItem(`dashboard-template-${plan.idea.id}`);
+    const savedTemplate = localStorage.getItem(
+      `dashboard-template-${plan.idea.id}`,
+    );
     if (savedTemplate) {
       setTemplate(savedTemplate as DashboardTemplate);
     }
@@ -225,14 +227,15 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
   const toggleTask = (taskId: string) => {
     setTasks((prev) =>
       prev.map((task) =>
-        task.id === taskId ? { ...task, completed: !task.completed } : task
-      )
+        task.id === taskId ? { ...task, completed: !task.completed } : task,
+      ),
     );
   };
 
   const completedCount = tasks.filter((t) => t.completed).length;
   const totalCount = tasks.length;
-  const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+  const progressPercent =
+    totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
   const filteredTasks =
     filter === "all" ? tasks : tasks.filter((t) => t.category === filter);
@@ -261,10 +264,13 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
                 return (
                   <Card
                     key={stat.category}
-                    className={`cursor-pointer transition-all hover:shadow-md ${filter === stat.category ? "ring-2 ring-primary" : ""
-                      }`}
+                    className={`cursor-pointer transition-all hover:shadow-md ${
+                      filter === stat.category ? "ring-2 ring-primary" : ""
+                    }`}
                     onClick={() =>
-                      setFilter(filter === stat.category ? "all" : stat.category)
+                      setFilter(
+                        filter === stat.category ? "all" : stat.category,
+                      )
                     }
                   >
                     <CardContent className="p-4 text-center">
@@ -286,7 +292,10 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
-                  {filter === "all" ? "All Tasks" : categoryConfig[filter as keyof typeof categoryConfig]?.label + " Tasks"}
+                  {filter === "all"
+                    ? "All Tasks"
+                    : categoryConfig[filter as keyof typeof categoryConfig]
+                        ?.label + " Tasks"}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -295,10 +304,11 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
                   return (
                     <div
                       key={task.id}
-                      className={`flex items-start gap-3 p-4 rounded-lg border transition-all ${task.completed
-                        ? "bg-muted/30 opacity-70"
-                        : "bg-background hover:bg-muted/20"
-                        }`}
+                      className={`flex items-start gap-3 p-4 rounded-lg border transition-all ${
+                        task.completed
+                          ? "bg-muted/30 opacity-70"
+                          : "bg-background hover:bg-muted/20"
+                      }`}
                     >
                       <Checkbox
                         checked={task.completed}
@@ -308,8 +318,11 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <p
-                            className={`font-medium ${task.completed ? "line-through text-muted-foreground" : ""
-                              }`}
+                            className={`font-medium ${
+                              task.completed
+                                ? "line-through text-muted-foreground"
+                                : ""
+                            }`}
                           >
                             {task.title}
                           </p>
@@ -338,7 +351,7 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
         return (
           <div className="space-y-8 py-4">
             {Object.entries(categoryConfig).map(([key, config], index) => {
-              const stat = categoryStats.find(s => s.category === key);
+              const stat = categoryStats.find((s) => s.category === key);
               const Icon = config.icon;
               const isCompleted = stat?.percent === 100;
               const hasStarted = (stat?.completed || 0) > 0;
@@ -351,17 +364,28 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
                   )}
 
                   {/* Icon Node */}
-                  <div className={`relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${isCompleted ? "bg-primary border-primary text-primary-foreground" :
-                    hasStarted ? "bg-background border-primary text-primary" :
-                      "bg-background border-muted text-muted-foreground"
-                    }`}>
-                    {isCompleted ? <CheckCircle2 className="h-6 w-6" /> : <Icon className="h-6 w-6" />}
+                  <div
+                    className={`relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
+                      isCompleted
+                        ? "bg-primary border-primary text-primary-foreground"
+                        : hasStarted
+                          ? "bg-background border-primary text-primary"
+                          : "bg-background border-muted text-muted-foreground"
+                    }`}
+                  >
+                    {isCompleted ? (
+                      <CheckCircle2 className="h-6 w-6" />
+                    ) : (
+                      <Icon className="h-6 w-6" />
+                    )}
                   </div>
 
                   {/* Content */}
                   <div className="flex-1 pb-8">
                     <div className="mb-2 flex items-center justify-between">
-                      <h4 className="text-lg font-bold">{config.label} Milestone</h4>
+                      <h4 className="text-lg font-bold">
+                        {config.label} Milestone
+                      </h4>
                       <Badge variant={isCompleted ? "default" : "outline"}>
                         {Math.round(stat?.percent || 0)}%
                       </Badge>
@@ -369,17 +393,24 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
                     <Card>
                       <CardContent className="p-4">
                         <div className="space-y-3">
-                          {tasks.filter(t => t.category === key).map(task => (
-                            <div key={task.id} className="flex items-center gap-3">
-                              <Checkbox
-                                checked={task.completed}
-                                onCheckedChange={() => toggleTask(task.id)}
-                              />
-                              <span className={`text-sm ${task.completed ? "line-through text-muted-foreground" : ""}`}>
-                                {task.title}
-                              </span>
-                            </div>
-                          ))}
+                          {tasks
+                            .filter((t) => t.category === key)
+                            .map((task) => (
+                              <div
+                                key={task.id}
+                                className="flex items-center gap-3"
+                              >
+                                <Checkbox
+                                  checked={task.completed}
+                                  onCheckedChange={() => toggleTask(task.id)}
+                                />
+                                <span
+                                  className={`text-sm ${task.completed ? "line-through text-muted-foreground" : ""}`}
+                                >
+                                  {task.title}
+                                </span>
+                              </div>
+                            ))}
                         </div>
                       </CardContent>
                     </Card>
@@ -393,9 +424,12 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
       case "timeline":
         const phases = [
           { name: "Week 1: Setup", categories: ["setup"] },
-          { name: "Week 2-3: Resources", categories: ["materials", "operations"] },
+          {
+            name: "Week 2-3: Resources",
+            categories: ["materials", "operations"],
+          },
           { name: "Week 4: Marketing", categories: ["marketing"] },
-          { name: "Month 2+: Growth", categories: ["growth"] }
+          { name: "Month 2+: Growth", categories: ["growth"] },
         ];
 
         return (
@@ -404,19 +438,36 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
               {phases.map((phase, i) => (
                 <div key={i} className="relative">
                   <div className="absolute -left-[41px] top-0 h-4 w-4 rounded-full bg-primary border-4 border-background" />
-                  <h4 className="font-bold text-lg mb-4 text-primary">{phase.name}</h4>
+                  <h4 className="font-bold text-lg mb-4 text-primary">
+                    {phase.name}
+                  </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {tasks.filter(t => phase.categories.includes(t.category)).map(task => (
-                      <Card key={task.id} className={`transition-all ${task.completed ? "bg-muted/30" : "hover:shadow-md"}`}>
-                        <CardContent className="p-4 flex gap-3">
-                          <Checkbox checked={task.completed} onCheckedChange={() => toggleTask(task.id)} className="mt-1" />
-                          <div>
-                            <p className={`font-medium text-sm ${task.completed ? "line-through text-muted-foreground" : ""}`}>{task.title}</p>
-                            <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{task.description}</p>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                    {tasks
+                      .filter((t) => phase.categories.includes(t.category))
+                      .map((task) => (
+                        <Card
+                          key={task.id}
+                          className={`transition-all ${task.completed ? "bg-muted/30" : "hover:shadow-md"}`}
+                        >
+                          <CardContent className="p-4 flex gap-3">
+                            <Checkbox
+                              checked={task.completed}
+                              onCheckedChange={() => toggleTask(task.id)}
+                              className="mt-1"
+                            />
+                            <div>
+                              <p
+                                className={`font-medium text-sm ${task.completed ? "line-through text-muted-foreground" : ""}`}
+                              >
+                                {task.title}
+                              </p>
+                              <p className="text-xs text-muted-foreground mt-1 line-clamp-1">
+                                {task.description}
+                              </p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
                   </div>
                 </div>
               ))}
@@ -430,10 +481,12 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-sm font-medium">Completion by Category</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Completion by Category
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {categoryStats.map(stat => (
+                  {categoryStats.map((stat) => (
                     <div key={stat.category} className="space-y-1">
                       <div className="flex justify-between text-xs">
                         <span>{categoryConfig[stat.category].label}</span>
@@ -447,7 +500,9 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-sm font-medium">Progress Summary</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Progress Summary
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -461,7 +516,9 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
                     </div>
                     <div className="flex items-center justify-between p-3 bg-amber-500/10 text-amber-600 rounded-lg">
                       <span className="text-sm">Remaining</span>
-                      <span className="font-bold">{totalCount - completedCount}</span>
+                      <span className="font-bold">
+                        {totalCount - completedCount}
+                      </span>
                     </div>
                   </div>
                 </CardContent>
@@ -470,13 +527,17 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-sm font-medium">Weekly Target</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Weekly Target
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-center p-8 bg-muted/20 rounded-xl border-2 border-dashed border-muted">
                   <div className="text-center">
                     <Trophy className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-                    <p className="text-muted-foreground text-sm max-w-[200px]">Complete 3 more tasks this week to stay on track!</p>
+                    <p className="text-muted-foreground text-sm max-w-[200px]">
+                      Complete 3 more tasks this week to stay on track!
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -495,10 +556,16 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold">Progress Tracking</h2>
-          <p className="text-muted-foreground">Choose how you want to track your business launch</p>
+          <p className="text-muted-foreground">
+            Choose how you want to track your business launch
+          </p>
         </div>
 
-        <Tabs value={template} onValueChange={(v) => setTemplate(v as DashboardTemplate)} className="w-full md:w-auto">
+        <Tabs
+          value={template}
+          onValueChange={(v) => setTemplate(v as DashboardTemplate)}
+          className="w-full md:w-auto"
+        >
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="checklist" title="Checklist">
               <ListTodo className="h-4 w-4 md:mr-2" />
@@ -560,9 +627,7 @@ export const ProgressDashboard = ({ plan }: ProgressDashboardProps) => {
       </Card>
 
       {/* Dynamic Template Content */}
-      <div className="animate-fade-in">
-        {renderTemplate()}
-      </div>
+      <div className="animate-fade-in">{renderTemplate()}</div>
 
       {/* Reset Progress */}
       <div className="text-center pt-4">

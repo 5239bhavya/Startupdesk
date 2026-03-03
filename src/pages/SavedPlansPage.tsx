@@ -3,7 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -82,8 +88,14 @@ const SavedPlansPage = () => {
   const handleView = (plan: SavedPlan) => {
     sessionStorage.setItem("userProfile", JSON.stringify(plan.user_profile));
     // Use the saved plan name as the business name so it appears on the dashboard
-    const businessWithCustomName = { ...plan.business_idea, name: plan.plan_name };
-    sessionStorage.setItem("selectedBusiness", JSON.stringify(businessWithCustomName));
+    const businessWithCustomName = {
+      ...plan.business_idea,
+      name: plan.plan_name,
+    };
+    sessionStorage.setItem(
+      "selectedBusiness",
+      JSON.stringify(businessWithCustomName),
+    );
     sessionStorage.setItem("loadedPlan", JSON.stringify(plan.business_plan));
     navigate("/plan");
   };
@@ -106,7 +118,9 @@ const SavedPlansPage = () => {
       <main className="flex-1 py-12 px-4 bg-muted/20">
         <div className="container max-w-4xl">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight mb-2">Saved Business Plans</h1>
+            <h1 className="text-3xl font-bold tracking-tight mb-2">
+              Saved Business Plans
+            </h1>
             <p className="text-muted-foreground">
               Access and manage your saved business plans
             </p>
@@ -128,22 +142,35 @@ const SavedPlansPage = () => {
           ) : (
             <div className="grid gap-4">
               {plans.map((plan) => (
-                <Card key={plan.id} className="hover:shadow-md transition-shadow">
+                <Card
+                  key={plan.id}
+                  className="hover:shadow-md transition-shadow"
+                >
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="text-3xl">{plan.business_idea.icon}</span>
+                        <span className="text-3xl">
+                          {plan.business_idea.icon}
+                        </span>
                         <div>
-                          <CardTitle className="text-lg">{plan.plan_name}</CardTitle>
-                          <CardDescription>{plan.business_idea.description}</CardDescription>
+                          <CardTitle className="text-lg">
+                            {plan.plan_name}
+                          </CardTitle>
+                          <CardDescription>
+                            {plan.business_idea.description}
+                          </CardDescription>
                         </div>
                       </div>
-                      <Badge variant="secondary">{plan.business_idea.riskLevel} Risk</Badge>
+                      <Badge variant="secondary">
+                        {plan.business_idea.riskLevel} Risk
+                      </Badge>
                     </div>
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
-                      <span>Investment: {plan.business_idea.investmentRange}</span>
+                      <span>
+                        Investment: {plan.business_idea.investmentRange}
+                      </span>
                       <span>•</span>
                       <span>Revenue: {plan.business_idea.expectedRevenue}</span>
                       <span>•</span>

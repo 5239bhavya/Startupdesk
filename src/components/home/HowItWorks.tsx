@@ -11,7 +11,8 @@ const steps = [
     icon: Sparkles,
     step: "02",
     title: "AI Analyzes & Recommends",
-    description: "Our AI generates 3 tailored business ideas with complete analysis.",
+    description:
+      "Our AI generates 3 tailored business ideas with complete analysis.",
   },
   {
     icon: CheckCircle,
@@ -23,7 +24,8 @@ const steps = [
     icon: FileText,
     step: "04",
     title: "Get Complete Plan",
-    description: "Receive a detailed business plan covering all aspects of your startup.",
+    description:
+      "Receive a detailed business plan covering all aspects of your startup.",
   },
 ];
 

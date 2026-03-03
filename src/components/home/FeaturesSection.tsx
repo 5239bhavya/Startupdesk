@@ -5,7 +5,7 @@ import {
   MapPin,
   Calculator,
   Megaphone,
-  TrendingUp
+  TrendingUp,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -13,37 +13,44 @@ const features = [
   {
     icon: Lightbulb,
     title: "Business Idea Selection",
-    description: "Get 3 tailored business ideas based on your budget, location, and interests with detailed feasibility analysis.",
+    description:
+      "Get 3 tailored business ideas based on your budget, location, and interests with detailed feasibility analysis.",
   },
   {
     icon: Package,
     title: "Raw Material Sourcing",
-    description: "Learn where to buy materials, understand cost structures, and discover reliable suppliers.",
+    description:
+      "Learn where to buy materials, understand cost structures, and discover reliable suppliers.",
   },
   {
     icon: Users,
     title: "Workforce Planning",
-    description: "Know exactly who to hire, required skills, salary ranges, and how many team members you need.",
+    description:
+      "Know exactly who to hire, required skills, salary ranges, and how many team members you need.",
   },
   {
     icon: MapPin,
     title: "Location Strategy",
-    description: "Find the perfect location type, ideal shop size, rent estimates, and setup requirements.",
+    description:
+      "Find the perfect location type, ideal shop size, rent estimates, and setup requirements.",
   },
   {
     icon: Calculator,
     title: "Pricing Guidance",
-    description: "Calculate costs, set competitive prices, and understand your profit margins clearly.",
+    description:
+      "Calculate costs, set competitive prices, and understand your profit margins clearly.",
   },
   {
     icon: Megaphone,
     title: "Marketing Plan",
-    description: "Get a 30-day launch plan with online and offline strategies that fit your budget.",
+    description:
+      "Get a 30-day launch plan with online and offline strategies that fit your budget.",
   },
   {
     icon: TrendingUp,
     title: "Growth Roadmap",
-    description: "Month-by-month action plan, expansion strategies, and common mistakes to avoid.",
+    description:
+      "Month-by-month action plan, expansion strategies, and common mistakes to avoid.",
   },
 ];
 

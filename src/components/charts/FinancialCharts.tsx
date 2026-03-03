@@ -1,5 +1,19 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, Legend } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+} from "recharts";
 import { BusinessIdea } from "@/types/business";
 import { TrendingUp, PieChart as PieChartIcon, BarChart3 } from "lucide-react";
 
@@ -25,37 +39,34 @@ export function FinancialCharts({ idea, pricing }: FinancialChartsProps) {
 
   const investment = parseAmount(idea.investmentRange);
   const monthlyRevenue = parseAmount(idea.expectedRevenue);
-  const profitMarginPercent = parseInt(idea.profitMargin.match(/\d+/)?.[0] || "35");
+  const profitMarginPercent = parseInt(
+    idea.profitMargin.match(/\d+/)?.[0] || "35",
+  );
   const monthlyProfit = (monthlyRevenue * profitMarginPercent) / 100;
   const breakEvenMonths = parseInt(idea.breakEvenTime.match(/\d+/)?.[0] || "4");
-
-  // Cash flow projection data (12 months)
-  const cashFlowData = Array.from({ length: 12 }, (_, i) => {
-    const month = i + 1;
-    const revenue = month <= 2 ? monthlyRevenue * 0.6 : month <= 4 ? monthlyRevenue * 0.8 : monthlyRevenue;
-    const profit = (revenue * profitMarginPercent) / 100;
-    const cumulative = month === 1 ? profit - investment : 0;
-    
-    return {
-      month: `M${month}`,
-      revenue: Math.round(revenue),
-      profit: Math.round(profit),
-      expenses: Math.round(revenue - profit),
-    };
-  });
 
   // Calculate cumulative profit for break-even analysis
   const breakEvenData = Array.from({ length: 12 }, (_, i) => {
     const month = i + 1;
-    const revenue = month <= 2 ? monthlyRevenue * 0.6 : month <= 4 ? monthlyRevenue * 0.8 : monthlyRevenue;
+    const revenue =
+      month <= 2
+        ? monthlyRevenue * 0.6
+        : month <= 4
+          ? monthlyRevenue * 0.8
+          : monthlyRevenue;
     const profit = (revenue * profitMarginPercent) / 100;
-    
+
     let cumulativeProfit = -investment;
     for (let m = 1; m <= month; m++) {
-      const r = m <= 2 ? monthlyRevenue * 0.6 : m <= 4 ? monthlyRevenue * 0.8 : monthlyRevenue;
+      const r =
+        m <= 2
+          ? monthlyRevenue * 0.6
+          : m <= 4
+            ? monthlyRevenue * 0.8
+            : monthlyRevenue;
       cumulativeProfit += (r * profitMarginPercent) / 100;
     }
-    
+
     return {
       month: `Month ${month}`,
       cumulative: Math.round(cumulativeProfit),
@@ -65,10 +76,22 @@ export function FinancialCharts({ idea, pricing }: FinancialChartsProps) {
 
   // ROI data
   const roiData = [
-    { period: "Month 3", roi: Math.round(((monthlyProfit * 3 - investment) / investment) * 100) },
-    { period: "Month 6", roi: Math.round(((monthlyProfit * 6 - investment) / investment) * 100) },
-    { period: "Month 12", roi: Math.round(((monthlyProfit * 12 - investment) / investment) * 100) },
-    { period: "Year 2", roi: Math.round(((monthlyProfit * 24 - investment) / investment) * 100) },
+    {
+      period: "Month 3",
+      roi: Math.round(((monthlyProfit * 3 - investment) / investment) * 100),
+    },
+    {
+      period: "Month 6",
+      roi: Math.round(((monthlyProfit * 6 - investment) / investment) * 100),
+    },
+    {
+      period: "Month 12",
+      roi: Math.round(((monthlyProfit * 12 - investment) / investment) * 100),
+    },
+    {
+      period: "Year 2",
+      roi: Math.round(((monthlyProfit * 24 - investment) / investment) * 100),
+    },
   ];
 
   // Cost breakdown data
@@ -91,39 +114,6 @@ export function FinancialCharts({ idea, pricing }: FinancialChartsProps) {
 
   return (
     <div className="space-y-6">
-      {/* Cash Flow Chart */}
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <BarChart3 className="h-5 w-5 text-primary" />
-            Monthly Cash Flow Projection
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={cashFlowData}>
-                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                <XAxis dataKey="month" className="text-xs" />
-                <YAxis tickFormatter={formatCurrency} className="text-xs" />
-                <Tooltip
-                  formatter={(value: number) => formatCurrency(value)}
-                  contentStyle={{
-                    backgroundColor: "hsl(var(--background))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: "8px",
-                  }}
-                />
-                <Legend />
-                <Bar dataKey="revenue" name="Revenue" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="profit" name="Profit" fill="hsl(var(--success))" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="expenses" name="Expenses" fill="hsl(var(--muted-foreground))" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </CardContent>
-      </Card>
-
       <div className="grid md:grid-cols-2 gap-6">
         {/* Break-Even Analysis */}
         <Card>
@@ -137,8 +127,15 @@ export function FinancialCharts({ idea, pricing }: FinancialChartsProps) {
             <div className="h-[250px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={breakEvenData}>
-                  <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                  <XAxis dataKey="month" className="text-xs" tick={{ fontSize: 10 }} />
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    className="stroke-muted"
+                  />
+                  <XAxis
+                    dataKey="month"
+                    className="text-xs"
+                    tick={{ fontSize: 10 }}
+                  />
                   <YAxis tickFormatter={formatCurrency} className="text-xs" />
                   <Tooltip
                     formatter={(value: number) => formatCurrency(value)}
@@ -167,7 +164,10 @@ export function FinancialCharts({ idea, pricing }: FinancialChartsProps) {
               </ResponsiveContainer>
             </div>
             <p className="text-sm text-muted-foreground text-center mt-2">
-              Expected break-even in <span className="font-semibold text-primary">{breakEvenMonths} months</span>
+              Expected break-even in{" "}
+              <span className="font-semibold text-primary">
+                {breakEvenMonths} months
+              </span>
             </p>
           </CardContent>
         </Card>
@@ -230,7 +230,9 @@ export function FinancialCharts({ idea, pricing }: FinancialChartsProps) {
                   item.roi >= 0 ? "bg-success/10" : "bg-destructive/10"
                 }`}
               >
-                <p className="text-sm text-muted-foreground mb-1">{item.period}</p>
+                <p className="text-sm text-muted-foreground mb-1">
+                  {item.period}
+                </p>
                 <p
                   className={`text-2xl font-bold ${
                     item.roi >= 0 ? "text-success" : "text-destructive"
@@ -243,7 +245,8 @@ export function FinancialCharts({ idea, pricing }: FinancialChartsProps) {
             ))}
           </div>
           <p className="text-sm text-muted-foreground text-center mt-4">
-            Based on investment of {formatCurrency(investment)} with {profitMarginPercent}% profit margin
+            Based on investment of {formatCurrency(investment)} with{" "}
+            {profitMarginPercent}% profit margin
           </p>
         </CardContent>
       </Card>

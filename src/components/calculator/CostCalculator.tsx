@@ -32,13 +32,13 @@ interface ExpenseItem {
 const parseAmount = (str: string): number => {
   const match = str.match(/[\d,]+/);
   if (!match) return 0;
-  return parseInt(match[0].replace(/,/g, ''), 10);
+  return parseInt(match[0].replace(/,/g, ""), 10);
 };
 
 const formatCurrency = (amount: number): string => {
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
     maximumFractionDigits: 0,
   }).format(amount);
 };
@@ -60,13 +60,19 @@ export const CostCalculator = ({ plan }: CostCalculatorProps) => {
       {
         id: "materials",
         name: "Raw Materials",
-        projected: parseAmount(plan.rawMaterials?.[0]?.estimatedCost || "20000"),
+        projected: parseAmount(
+          plan.rawMaterials?.[0]?.estimatedCost || "20000",
+        ),
         actual: 0,
       },
       {
         id: "staff",
         name: "Staff Salaries",
-        projected: plan.workforce?.reduce((sum, w) => sum + parseAmount(w.estimatedSalary) * w.count, 0) || 15000,
+        projected:
+          plan.workforce?.reduce(
+            (sum, w) => sum + parseAmount(w.estimatedSalary) * w.count,
+            0,
+          ) || 15000,
         actual: 0,
       },
       {
@@ -103,36 +109,45 @@ export const CostCalculator = ({ plan }: CostCalculatorProps) => {
   useEffect(() => {
     // Save to localStorage
     if (expenses.length > 0) {
-      localStorage.setItem(`costs-${plan.idea.id}`, JSON.stringify({
-        expenses,
-        revenue: monthlyRevenue,
-      }));
+      localStorage.setItem(
+        `costs-${plan.idea.id}`,
+        JSON.stringify({
+          expenses,
+          revenue: monthlyRevenue,
+        }),
+      );
     }
   }, [expenses, monthlyRevenue, plan.idea.id]);
 
   const updateActual = (id: string, value: number) => {
-    setExpenses(prev => prev.map(e => e.id === id ? { ...e, actual: value } : e));
+    setExpenses((prev) =>
+      prev.map((e) => (e.id === id ? { ...e, actual: value } : e)),
+    );
   };
 
   const addExpense = () => {
     if (!newExpenseName.trim()) return;
-    setExpenses(prev => [...prev, {
-      id: `custom-${Date.now()}`,
-      name: newExpenseName.trim(),
-      projected: 0,
-      actual: 0,
-    }]);
+    setExpenses((prev) => [
+      ...prev,
+      {
+        id: `custom-${Date.now()}`,
+        name: newExpenseName.trim(),
+        projected: 0,
+        actual: 0,
+      },
+    ]);
     setNewExpenseName("");
   };
 
   const removeExpense = (id: string) => {
-    setExpenses(prev => prev.filter(e => e.id !== id));
+    setExpenses((prev) => prev.filter((e) => e.id !== id));
   };
 
   const totalProjected = expenses.reduce((sum, e) => sum + e.projected, 0);
   const totalActual = expenses.reduce((sum, e) => sum + e.actual, 0);
   const variance = totalActual - totalProjected;
-  const variancePercent = totalProjected > 0 ? (variance / totalProjected) * 100 : 0;
+  const variancePercent =
+    totalProjected > 0 ? (variance / totalProjected) * 100 : 0;
   const profit = monthlyRevenue - totalActual;
   const profitMargin = monthlyRevenue > 0 ? (profit / monthlyRevenue) * 100 : 0;
 
@@ -142,32 +157,57 @@ export const CostCalculator = ({ plan }: CostCalculatorProps) => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4 text-center">
-            <p className="text-xs text-muted-foreground mb-1">Projected Costs</p>
-            <p className="text-xl font-bold">{formatCurrency(totalProjected)}</p>
+            <p className="text-xs text-muted-foreground mb-1">
+              Projected Costs
+            </p>
+            <p className="text-xl font-bold">
+              {formatCurrency(totalProjected)}
+            </p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <p className="text-xs text-muted-foreground mb-1">Actual Costs</p>
-            <p className="text-xl font-bold text-primary">{formatCurrency(totalActual)}</p>
+            <p className="text-xl font-bold text-primary">
+              {formatCurrency(totalActual)}
+            </p>
           </CardContent>
         </Card>
-        <Card className={variance > 0 ? "border-destructive/50" : "border-success/50"}>
+        <Card
+          className={
+            variance > 0 ? "border-destructive/50" : "border-success/50"
+          }
+        >
           <CardContent className="p-4 text-center">
             <p className="text-xs text-muted-foreground mb-1">Variance</p>
-            <p className={`text-xl font-bold flex items-center justify-center gap-1 ${variance > 0 ? 'text-destructive' : 'text-success'}`}>
-              {variance > 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
+            <p
+              className={`text-xl font-bold flex items-center justify-center gap-1 ${variance > 0 ? "text-destructive" : "text-success"}`}
+            >
+              {variance > 0 ? (
+                <TrendingUp className="h-4 w-4" />
+              ) : (
+                <TrendingDown className="h-4 w-4" />
+              )}
               {formatCurrency(Math.abs(variance))}
             </p>
-            <p className={`text-xs ${variance > 0 ? 'text-destructive' : 'text-success'}`}>
-              {variancePercent > 0 ? '+' : ''}{variancePercent.toFixed(1)}%
+            <p
+              className={`text-xs ${variance > 0 ? "text-destructive" : "text-success"}`}
+            >
+              {variancePercent > 0 ? "+" : ""}
+              {variancePercent.toFixed(1)}%
             </p>
           </CardContent>
         </Card>
-        <Card className={profit >= 0 ? "border-success/50" : "border-destructive/50"}>
+        <Card
+          className={
+            profit >= 0 ? "border-success/50" : "border-destructive/50"
+          }
+        >
           <CardContent className="p-4 text-center">
             <p className="text-xs text-muted-foreground mb-1">Monthly Profit</p>
-            <p className={`text-xl font-bold ${profit >= 0 ? 'text-success' : 'text-destructive'}`}>
+            <p
+              className={`text-xl font-bold ${profit >= 0 ? "text-success" : "text-destructive"}`}
+            >
               {formatCurrency(profit)}
             </p>
             <p className="text-xs text-muted-foreground">
@@ -212,7 +252,8 @@ export const CostCalculator = ({ plan }: CostCalculatorProps) => {
         <CardContent className="space-y-4">
           {expenses.map((expense) => {
             const diff = expense.actual - expense.projected;
-            const diffPercent = expense.projected > 0 ? (diff / expense.projected) * 100 : 0;
+            const diffPercent =
+              expense.projected > 0 ? (diff / expense.projected) * 100 : 0;
             const isOverBudget = diff > 0;
 
             return (
@@ -223,14 +264,23 @@ export const CostCalculator = ({ plan }: CostCalculatorProps) => {
                     {expense.actual > 0 && (
                       <Badge
                         variant="outline"
-                        className={isOverBudget ? "border-destructive/50 text-destructive" : "border-success/50 text-success"}
+                        className={
+                          isOverBudget
+                            ? "border-destructive/50 text-destructive"
+                            : "border-success/50 text-success"
+                        }
                       >
-                        {isOverBudget ? <AlertTriangle className="h-3 w-3 mr-1" /> : <CheckCircle2 className="h-3 w-3 mr-1" />}
-                        {diffPercent > 0 ? '+' : ''}{diffPercent.toFixed(0)}%
+                        {isOverBudget ? (
+                          <AlertTriangle className="h-3 w-3 mr-1" />
+                        ) : (
+                          <CheckCircle2 className="h-3 w-3 mr-1" />
+                        )}
+                        {diffPercent > 0 ? "+" : ""}
+                        {diffPercent.toFixed(0)}%
                       </Badge>
                     )}
                   </div>
-                  {expense.id.startsWith('custom-') && (
+                  {expense.id.startsWith("custom-") && (
                     <Button
                       variant="ghost"
                       size="sm"
@@ -242,13 +292,21 @@ export const CostCalculator = ({ plan }: CostCalculatorProps) => {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-xs text-muted-foreground mb-1">Projected</p>
+                    <p className="text-xs text-muted-foreground mb-1">
+                      Projected
+                    </p>
                     <Input
                       type="number"
                       value={expense.projected || ""}
-                      onChange={(e) => setExpenses(prev => 
-                        prev.map(ex => ex.id === expense.id ? { ...ex, projected: Number(e.target.value) } : ex)
-                      )}
+                      onChange={(e) =>
+                        setExpenses((prev) =>
+                          prev.map((ex) =>
+                            ex.id === expense.id
+                              ? { ...ex, projected: Number(e.target.value) }
+                              : ex,
+                          ),
+                        )
+                      }
                       className="bg-muted/30"
                     />
                   </div>
@@ -257,14 +315,19 @@ export const CostCalculator = ({ plan }: CostCalculatorProps) => {
                     <Input
                       type="number"
                       value={expense.actual || ""}
-                      onChange={(e) => updateActual(expense.id, Number(e.target.value))}
+                      onChange={(e) =>
+                        updateActual(expense.id, Number(e.target.value))
+                      }
                       placeholder="Enter actual cost"
                     />
                   </div>
                 </div>
                 {expense.projected > 0 && (
                   <Progress
-                    value={Math.min((expense.actual / expense.projected) * 100, 150)}
+                    value={Math.min(
+                      (expense.actual / expense.projected) * 100,
+                      150,
+                    )}
                     className="h-2"
                   />
                 )}
@@ -278,7 +341,7 @@ export const CostCalculator = ({ plan }: CostCalculatorProps) => {
               placeholder="New expense name..."
               value={newExpenseName}
               onChange={(e) => setNewExpenseName(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && addExpense()}
+              onKeyPress={(e) => e.key === "Enter" && addExpense()}
             />
             <Button onClick={addExpense} variant="outline">
               <PlusCircle className="h-4 w-4 mr-2" />
@@ -290,7 +353,13 @@ export const CostCalculator = ({ plan }: CostCalculatorProps) => {
 
       {/* Analysis */}
       {totalActual > 0 && (
-        <Card className={variance > totalProjected * 0.1 ? "border-destructive/50 bg-destructive/5" : "border-success/50 bg-success/5"}>
+        <Card
+          className={
+            variance > totalProjected * 0.1
+              ? "border-destructive/50 bg-destructive/5"
+              : "border-success/50 bg-success/5"
+          }
+        >
           <CardContent className="p-4">
             <div className="flex items-start gap-3">
               {variance > totalProjected * 0.1 ? (
@@ -300,14 +369,14 @@ export const CostCalculator = ({ plan }: CostCalculatorProps) => {
               )}
               <div>
                 <p className="font-medium">
-                  {variance > totalProjected * 0.1 
-                    ? "Costs are higher than projected" 
+                  {variance > totalProjected * 0.1
+                    ? "Costs are higher than projected"
                     : "You're within budget!"}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {variance > totalProjected * 0.1 
-                    ? `Your actual costs are ${variancePercent.toFixed(1)}% over budget. Consider reviewing ${expenses.find(e => e.actual > e.projected * 1.2)?.name || 'high-cost items'}.`
-                    : `Great job! You're spending ${Math.abs(variancePercent).toFixed(1)}% ${variance < 0 ? 'under' : 'close to'} your projections.`}
+                  {variance > totalProjected * 0.1
+                    ? `Your actual costs are ${variancePercent.toFixed(1)}% over budget. Consider reviewing ${expenses.find((e) => e.actual > e.projected * 1.2)?.name || "high-cost items"}.`
+                    : `Great job! You're spending ${Math.abs(variancePercent).toFixed(1)}% ${variance < 0 ? "under" : "close to"} your projections.`}
                 </p>
               </div>
             </div>

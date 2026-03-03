@@ -2,7 +2,13 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BusinessIdea } from "@/types/business";
-import { TrendingUp, Clock, AlertTriangle, IndianRupee, ArrowRight } from "lucide-react";
+import {
+  TrendingUp,
+  Clock,
+  AlertTriangle,
+  IndianRupee,
+  ArrowRight,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface BusinessCardProps {
@@ -11,7 +17,11 @@ interface BusinessCardProps {
   onSelect: () => void;
 }
 
-export function BusinessCard({ idea, isSelected, onSelect }: BusinessCardProps) {
+export function BusinessCard({
+  idea,
+  isSelected,
+  onSelect,
+}: BusinessCardProps) {
   const riskColors = {
     Low: "bg-success/10 text-success border-success/20",
     Medium: "bg-warning/10 text-warning border-warning/20",
@@ -19,11 +29,11 @@ export function BusinessCard({ idea, isSelected, onSelect }: BusinessCardProps) 
   };
 
   return (
-    <Card 
+    <Card
       variant={isSelected ? "selected" : "interactive"}
       className={cn(
         "relative overflow-hidden transition-all duration-300",
-        isSelected && "ring-2 ring-primary ring-offset-2"
+        isSelected && "ring-2 ring-primary ring-offset-2",
       )}
       onClick={onSelect}
     >
@@ -70,7 +80,9 @@ export function BusinessCard({ idea, isSelected, onSelect }: BusinessCardProps) 
               <AlertTriangle className="h-3 w-3" />
               Profit Margin
             </div>
-            <p className="text-sm font-medium text-success">{idea.profitMargin}</p>
+            <p className="text-sm font-medium text-success">
+              {idea.profitMargin}
+            </p>
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -83,8 +95,8 @@ export function BusinessCard({ idea, isSelected, onSelect }: BusinessCardProps) 
       </CardContent>
 
       <CardFooter className="p-6 pt-0">
-        <Button 
-          className="w-full group" 
+        <Button
+          className="w-full group"
           variant={isSelected ? "default" : "outline"}
         >
           {isSelected ? "Selected" : "Select This Business"}

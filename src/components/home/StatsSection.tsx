@@ -43,7 +43,7 @@ export function StatsSection() {
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
 
     observer.observe(el);
@@ -57,8 +57,12 @@ export function StatsSection() {
 
       <div className="container relative">
         <div className="mx-auto max-w-4xl text-center animate-slide-up">
-          <h3 className="text-3xl font-bold mb-4">Trusted by founders worldwide</h3>
-          <p className="text-muted-foreground mb-12">We help entrepreneurs build viable, investor-ready plans quickly.</p>
+          <h3 className="text-3xl font-bold mb-4">
+            Trusted by founders worldwide
+          </h3>
+          <p className="text-muted-foreground mb-12">
+            We help entrepreneurs build viable, investor-ready plans quickly.
+          </p>
         </div>
 
         <div ref={ref} className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">

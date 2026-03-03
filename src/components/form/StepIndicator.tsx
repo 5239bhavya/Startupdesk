@@ -19,8 +19,8 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
                   index < currentStep
                     ? "border-primary bg-primary text-primary-foreground"
                     : index === currentStep
-                    ? "border-primary bg-background text-primary"
-                    : "border-muted-foreground/30 bg-background text-muted-foreground"
+                      ? "border-primary bg-background text-primary"
+                      : "border-muted-foreground/30 bg-background text-muted-foreground",
                 )}
               >
                 {index < currentStep ? (
@@ -34,7 +34,7 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
                   "mt-2 text-xs font-medium hidden sm:block",
                   index <= currentStep
                     ? "text-foreground"
-                    : "text-muted-foreground"
+                    : "text-muted-foreground",
                 )}
               >
                 {step}
@@ -44,7 +44,7 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
               <div
                 className={cn(
                   "h-0.5 w-8 sm:w-16 mx-2 transition-colors duration-300",
-                  index < currentStep ? "bg-primary" : "bg-muted-foreground/30"
+                  index < currentStep ? "bg-primary" : "bg-muted-foreground/30",
                 )}
               />
             )}

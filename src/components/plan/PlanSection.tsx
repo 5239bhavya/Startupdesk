@@ -48,7 +48,9 @@ export function InfoRow({ label, value, highlight }: InfoRowProps) {
   return (
     <div className="flex justify-between items-center py-2 border-b border-border/50 last:border-0">
       <span className="text-sm text-muted-foreground">{label}</span>
-      <span className={`text-sm font-medium ${highlight ? "text-success" : ""}`}>
+      <span
+        className={`text-sm font-medium ${highlight ? "text-success" : ""}`}
+      >
         {value}
       </span>
     </div>

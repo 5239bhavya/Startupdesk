@@ -9,16 +9,23 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md hover:scale-105 active:scale-95",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm hover:shadow-md",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:border-accent",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:scale-105 active:scale-95",
+        default:
+          "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md hover:scale-105 active:scale-95",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm hover:shadow-md",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:border-accent",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:scale-105 active:scale-95",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         hero: "gradient-primary text-primary-foreground glow-sm hover:glow-md transform-gpu hover:-translate-y-1 hover:scale-105 active:scale-95 font-semibold",
-        "hero-outline": "border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground hover:scale-105 active:scale-95",
-        success: "bg-success text-success-foreground hover:bg-success/90 shadow-sm hover:shadow-md hover:scale-105 active:scale-95",
-        glass: "glass text-foreground hover:glass-strong hover:scale-105 active:scale-95",
+        "hero-outline":
+          "border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground hover:scale-105 active:scale-95",
+        success:
+          "bg-success text-success-foreground hover:bg-success/90 shadow-sm hover:shadow-md hover:scale-105 active:scale-95",
+        glass:
+          "glass text-foreground hover:glass-strong hover:scale-105 active:scale-95",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -32,12 +39,13 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-  VariantProps<typeof buttonVariants> {
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
 
@@ -51,7 +59,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  }
+  },
 );
 Button.displayName = "Button";
 

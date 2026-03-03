@@ -3,31 +3,35 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'elevated' | 'interactive' | 'selected' | 'glass' | 'glow';
+  variant?:
+    | "default"
+    | "elevated"
+    | "interactive"
+    | "selected"
+    | "glass"
+    | "glow";
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant = 'default', ...props }, ref) => {
+  ({ className, variant = "default", ...props }, ref) => {
     const variants = {
-      default: "rounded-xl border bg-card text-card-foreground shadow-sm transition-all duration-300",
-      elevated: "rounded-xl border bg-card text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300",
-      interactive: "rounded-xl border bg-card text-card-foreground shadow-sm hover-lift cursor-pointer group",
-      selected: "rounded-xl border-2 border-primary bg-card text-card-foreground shadow-lg glow-sm",
-      glass: "rounded-xl glass text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300",
+      default:
+        "rounded-xl border bg-card text-card-foreground shadow-sm transition-all duration-300",
+      elevated:
+        "rounded-xl border bg-card text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300",
+      interactive:
+        "rounded-xl border bg-card text-card-foreground shadow-sm hover-lift cursor-pointer group",
+      selected:
+        "rounded-xl border-2 border-primary bg-card text-card-foreground shadow-lg glow-sm",
+      glass:
+        "rounded-xl glass text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300",
       glow: "rounded-xl border border-primary/20 bg-card text-card-foreground shadow-sm hover-lift hover-glow cursor-pointer group",
     };
 
     return (
-      <div
-        ref={ref}
-        className={cn(
-          variants[variant],
-          className
-        )}
-        {...props}
-      />
+      <div ref={ref} className={cn(variants[variant], className)} {...props} />
     );
-  }
+  },
 );
 Card.displayName = "Card";
 
@@ -51,7 +55,7 @@ const CardTitle = React.forwardRef<
     ref={ref}
     className={cn(
       "text-2xl font-semibold leading-none tracking-tight",
-      className
+      className,
     )}
     {...props}
   />
@@ -90,4 +94,11 @@ const CardFooter = React.forwardRef<
 ));
 CardFooter.displayName = "CardFooter";
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
+};

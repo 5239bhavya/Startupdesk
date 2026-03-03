@@ -25,6 +25,7 @@ The only requirement is having Node.js & npm installed - [install with nvm](http
 This project requires both a Python Flask backend and a Vite React frontend.
 
 ### 1. Start the Flask Backend
+
 ```sh
 # 1. Install Python dependencies (if not already done)
 pip install flask flask-cors google-generativeai python-dotenv requests
@@ -32,9 +33,11 @@ pip install flask flask-cors google-generativeai python-dotenv requests
 # 2. Run the backend server
 python backend/app.py
 ```
+
 The backend will run on `http://127.0.0.1:5000`.
 
 ### 2. Start the Vite Frontend
+
 ```sh
 # 1. Install frontend dependencies
 npm i
@@ -42,6 +45,7 @@ npm i
 # 2. Start the dev server
 npm run dev
 ```
+
 The frontend will run on `http://localhost:8081` (or next available port).
 
 **Edit a file directly in GitHub**

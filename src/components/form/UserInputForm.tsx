@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -21,13 +27,17 @@ const interestOptions = [
   { value: "health", label: "Health & Wellness", emoji: "💊" },
 ];
 
-export function UserInputForm() {
+interface UserInputFormProps {
+  initialBudget?: string;
+}
+
+export function UserInputForm({ initialBudget }: UserInputFormProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<UserProfile>({
-    budget: "",
+    budget: initialBudget || "",
     city: "",
     interest: "",
     experience: "beginner",
@@ -43,7 +53,10 @@ export function UserInputForm() {
       return;
     }
     if (currentStep === 2 && !formData.interest) {
-      toast({ title: "Please select an interest area", variant: "destructive" });
+      toast({
+        title: "Please select an interest area",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -65,7 +78,7 @@ export function UserInputForm() {
     // Simulate AI processing
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setIsLoading(false);
-    
+
     // Store form data in session storage for the next page
     sessionStorage.setItem("userProfile", JSON.stringify(formData));
     navigate("/recommendations");
@@ -107,7 +120,11 @@ export function UserInputForm() {
                   variant="outline"
                   size="sm"
                   onClick={() => setFormData({ ...formData, budget: amount })}
-                  className={formData.budget === amount ? "border-primary bg-primary/5" : ""}
+                  className={
+                    formData.budget === amount
+                      ? "border-primary bg-primary/5"
+                      : ""
+                  }
                 >
                   ₹{parseInt(amount).toLocaleString("en-IN")}
                 </Button>
@@ -213,7 +230,8 @@ export function UserInputForm() {
                 <div>
                   <div className="font-medium">Experienced</div>
                   <div className="text-sm text-muted-foreground">
-                    Have prior business experience, looking for new opportunities
+                    Have prior business experience, looking for new
+                    opportunities
                   </div>
                 </div>
               </label>
